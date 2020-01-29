@@ -1,11 +1,8 @@
-# DS5500-capstone
-Northeastern University Capstone project. Focus is on extracting Clinical events and Temporal data using Contextual word embeddings.
+# DS 5500 Project Proposal: Clinical event and Temporal Information extraction using Contextual word embeddings
 
 Authors: Manas Ranjan Mohanty mohanty.m@husky.neu.edu, Parth Barhanpurkar barhanpurkar.p@husky.neu.edu, Anushka Tak tak.a@husky.neu.edu
 
-Project name: Clinical event and Temporal Information extraction using Contextual word embeddings
-
-Summary
+# Summary
 
 Understanding the clinical timeline is crucial in determining a patient's diagnosis and treatment. Narrative provider notes from electronic health records frequently detail important information on the temporal ordering of events in a patient's clinical timeline. Temporal analysis of the clinical narrative is therefore a prime target for developing automated natural language processing techniques that allow computerized systems to access, reason about, and sequence the clinical events in a patient's record. Such techniques potentially enable or facilitate tracking disease status, monitoring treatment outcomes and complications, discovering medication side effects, etc. With this intent, The Sixth Informatics for Integrating Biology and the Bedside (i2b2) Natural Language Processing Challenge for Clinical Records focused on the temporal relations in clinical narratives. The organizers provided the research community with a corpus of discharge summaries annotated with temporal information, to be used for the development and evaluation of temporal reasoning systems.
 
