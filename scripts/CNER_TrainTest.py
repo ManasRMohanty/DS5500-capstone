@@ -1,45 +1,48 @@
 from CNER_EntityExraction import EntityExtraction
+from CNER_DischargeNote import DischargeNote
 
 import os
 import xml.etree.ElementTree as ET
 import pandas as pd
+from progressbar import ProgressBar
+
+
+print("File reading for training in progress...")
 
 word_list = []
 count = 0
-for file in os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/train_data/"):
+pbar = ProgressBar()
+
+for file in pbar(os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/train_data/")):
     if file.endswith(".xml"):
         try:
             file_name = os.path.join("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/train_data/", file)
             tree = ET.parse(file_name)
             root = tree.getroot()
-            discharge_note = Discharge_note(root)
+            discharge_note = DischargeNote(root)
             discharge_note.process_note()
             word_list.extend(discharge_note.processed_text)
-            count = count + 1
-            print(count)
-
         except:
-            count = count + 1
             print("Error in processing file:",file)
 
 
+print("File reading for testing in progress...")
 word_list_test = []
 count = 0
-for file in os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_data/"):
+pbar = ProgressBar()
+
+for file in pbar(os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_data/")):
     if file.endswith(".xml"):
         try:
             file_name = os.path.join("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_data/", file)
             tree = ET.parse(file_name)
             root = tree.getroot()
-            discharge_note = Discharge_note(root)
+            discharge_note = DischargeNote(root)
             discharge_note.process_note()
             word_list_test.extend(discharge_note.processed_text)
-            count = count + 1
-            print(count)
-            
         except:
-            count = count + 1
             print("Error in processing file:",file)
+
 
 
 for bert_layer in range(13):

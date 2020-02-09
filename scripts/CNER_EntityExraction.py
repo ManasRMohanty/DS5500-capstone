@@ -54,8 +54,7 @@ class EntityExtraction():
         
         X = np.vstack(list(combined_data["input_vector"]))                                
         y = combined_data[self.column_name_for_flag]  
-       
-        clf = LogisticRegression(random_state=0, solver='lbfgs',multi_class='ovr').fit(X, y)
+        clf = LogisticRegression(random_state=0, solver='lbfgs',multi_class='ovr',max_iter=10000).fit(X, y)
         pickle.dump(clf,open(self.model_path,'wb'))
     
     def predict_proba(self,data):

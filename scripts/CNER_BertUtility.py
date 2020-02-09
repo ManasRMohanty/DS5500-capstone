@@ -38,6 +38,7 @@ def get_bert_token_positions(input_text,token_list,start_from_pos=0):
     return pos_list
 
 def process_string(string_input, padding_length):
+
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
     sentences = tokenizer.tokenize(string_input)
     
@@ -62,11 +63,11 @@ def process_string(string_input, padding_length):
 
         input_ids = torch.tensor(bert_tokenizer.encode(bert_input)).unsqueeze(0)  
         outputs = bert_model(input_ids)
-        bert_vector = outputs[2][0][0].data.numpy()
+        bert_vector = outputs[2]
         bert_tokens = bert_tokenizer.tokenize(bert_input)
 
         start_pos = 0
-        prior_pos = get_token_positions(' '.join(sentences[start_index_bert:index]),bert_tokens)
+        prior_pos = get_bert_token_positions(' '.join(sentences[start_index_bert:index]),bert_tokens)
         
         if(len(prior_pos)>0):
             start_pos = max(prior_pos)
@@ -87,17 +88,22 @@ def process_string(string_input, padding_length):
             new_dict["begin_pos"] = token_position
             new_dict["end_pos"] = positions_covered
 
-            bert_token_positions = get_token_positions(current_word,bert_tokens,start_pos)
-            vec_list = []
+            bert_token_positions = get_bert_token_positions(current_word,bert_tokens,start_pos)
+            
+            vec_list_layers = []
+            
             if(len(bert_token_positions)==0):
                 continue
             start_pos = bert_token_positions[-1] + 1
-
-            for entry in bert_token_positions:
-                vec_list.append(bert_vector[entry])
             
-            bert_vector_word = np.mean(vec_list,axis=0)
-            new_dict["keyword_vector"] = bert_vector_word
+            for bert_layer in range(13):
+                vec_list = []
+                for entry in bert_token_positions:
+                    vec_list.append(bert_vector[bert_layer][0][entry].data.numpy())
+                
+                vec_list_layers.append(np.mean(vec_list,axis=0))
+                
+            new_dict["keyword_vector"] = vec_list_layers
 
             word_list.append(new_dict)
     
