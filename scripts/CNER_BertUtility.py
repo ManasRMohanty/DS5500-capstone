@@ -5,6 +5,27 @@ from transformers import BertTokenizer, BertConfig
 from transformers import BertModel
 import torch
 
+'''
+This class contains all the utility methods for the project.
+
+get_bert_token_positions(input_text,token_list,start_from_pos=0) - 
+This method accepts an input text and a list of tokens, then finds positions of all the tokens which 
+completes the input text. For example, given input text 'xyz' and a list of tokens ['ab','cd','ef,'g','xy','z'], 
+this method matches 'xyz' with 'xy' and 'z', and thus returns [4,5], which are the positions corresponding to tokens 'xy' 
+and 'z' in the list. start_from_pos is an optional parameter to indicate the starting position in the list to start the 
+search for.
+
+process_string(string_input, padding_length) - 
+
+This method accepts a string input as first parameter. At first it devides the string input into sentences. Then, for a given  
+sentence it considers few sentences before and after it. The number of sentences to consider is defined by padding_length 
+argument. If a sentence is the first sentence of the sequence, it only considers sentences to its right, similarly if a sentence 
+is the last sentence of the sequence it considers only to its left. After that, the set of sentences are passed to BERT to 
+generate bert token embeddings. Then for the given sentence(in the middle), the word embeddings for all the words are calculated one
+by one, by matching the corresponding BERT tokens, and then averaging the embeddings associated with the bert tokens. This process is
+repeated for all the sentences and word embeddings are generated.
+
+'''
 def get_bert_token_positions(input_text,token_list,start_from_pos=0):
     
     pos_list = []                    

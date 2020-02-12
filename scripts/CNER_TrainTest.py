@@ -6,7 +6,11 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 from progressbar import ProgressBar
 
+'''
 
+This file is to train and test the entity extraction models.
+
+'''
 print("File reading for training in progress...")
 
 word_list = []
