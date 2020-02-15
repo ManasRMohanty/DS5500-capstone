@@ -38,12 +38,8 @@ def is_available_in_pos_list(dict_list, begin_pos, end_pos):
 class DischargeNote():
     def __init__(self, root,file_name):
         self.xml_root = root
-<<<<<<< HEAD
         self.file_name = file_name
            
-=======
-
->>>>>>> 0e76a32533639afc709fd21bb87efb4178bf2522
     def process_note(self):
         root = self.xml_root
         text_section = root.find('TEXT')
@@ -92,9 +88,6 @@ class DischargeNote():
 
             entry.update({"event_flag":1 if event_entry_available else 0})
             entry.update({"timex_flag":1 if (timex_entry_available or sectime_entry_available) else 0})
-<<<<<<< HEAD
             entry.update({"file_name":self.file_name})
 
 
-=======
->>>>>>> 0e76a32533639afc709fd21bb87efb4178bf2522
