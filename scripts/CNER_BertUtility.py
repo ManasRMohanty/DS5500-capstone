@@ -82,10 +82,11 @@ def process_string(string_input, padding_length):
 
         bert_input = ' '.join(sentences[start_index_bert:(end_index_bert+1)])
 
-        input_ids = torch.tensor(bert_tokenizer.encode(bert_input)).unsqueeze(0)  
+        encodings = bert_tokenizer.encode(bert_input,add_special_tokens = True)
+        input_ids = torch.tensor(encodings).unsqueeze(0)  
         outputs = bert_model(input_ids)
         bert_vector = outputs[2]
-        bert_tokens = bert_tokenizer.tokenize(bert_input)
+        bert_tokens = bert_tokenizer.convert_ids_to_tokens(encodings) #bert_tokenizer.tokenize(bert_input,add_special_tokens = True)
 
         start_pos = 0
         prior_pos = get_bert_token_positions(' '.join(sentences[start_index_bert:index]),bert_tokens)

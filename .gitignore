@@ -1,3 +1,5 @@
 train_data/*
 test_data/*
 models/*
+all_data/*
+test_results/*

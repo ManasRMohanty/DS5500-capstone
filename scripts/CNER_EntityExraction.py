@@ -78,7 +78,7 @@ class EntityExtraction():
         
         X = np.vstack(list(combined_data["input_vector"]))                                
         y = combined_data[self.column_name_for_flag]  
-        clf = LogisticRegression(random_state=0, solver='lbfgs',multi_class='ovr',max_iter=100).fit(X, y)
+        clf = LogisticRegression(random_state=0, solver='lbfgs',multi_class='ovr',max_iter=1000).fit(X, y)
         pickle.dump(clf,open(self.model_path,'wb'))
     
     def predict_proba(self,data):
@@ -108,6 +108,10 @@ class EntityExtraction():
         clf = pickle.load(open(self.model_path,'rb'))
         y_pred = clf.predict(X)
         
-        print("Score on test data:",clf.score(X,y))
+        accuracy = clf.score(X,y)
+        print("Score on test data:",accuracy)
         print(confusion_matrix(y,y_pred))
-        print("F1 Score:",f1_score(y, y_pred, average='micro'))
+        f1_score_test = f1_score(y, y_pred, average='micro')
+        print("F1 Score:",f1_score_test)
+
+        return [accuracy,f1_score_test]
