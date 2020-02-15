@@ -63,11 +63,11 @@ def process_string(string_input, padding_length):
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
     sentences = tokenizer.tokenize(string_input)
     
-    config = BertConfig.from_pretrained('C:/Users/itsma/Documents/BERT_models/NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12')
+    config = BertConfig.from_pretrained('bio-bert-uncased')
     config.output_hidden_states = True
 
-    bert_tokenizer = BertTokenizer.from_pretrained('C:/Users/itsma/Documents/BERT_models/NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12')
-    bert_model = BertModel.from_pretrained("C:/Users/itsma/Documents/BERT_models/NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12",config=config)
+    bert_tokenizer = BertTokenizer.from_pretrained('bio-bert-uncased')
+    bert_model = BertModel.from_pretrained('bio-bert-uncased',config=config)
     
     positions_covered = 0
     word_list = []
