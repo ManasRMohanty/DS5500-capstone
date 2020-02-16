@@ -13,10 +13,12 @@ The primary approach taken by all the researchers on this task was to implement 
 # Concepts  
 
 What are word embeddings?
+
 A word embedding is a learned representation for text where words that have the same meaning have a similar representation.(src- Machinelearningmastery.com). Key to the approach is the idea of using a dense distributed representation for each word.
 Each word is represented by a real-valued vector, often tens or hundreds of dimensions. This is contrasted to the thousands or millions of dimensions required for sparse word representations, such as a one-hot encoding.
 
 How BERT works?
+
 BERT makes use of Transformer, an attention mechanism that learns contextual relations between words (or sub-words) in a text. In its vanilla form, Transformer includes two separate mechanisms — an encoder that reads the text input and a decoder that produces a prediction for the task. Since BERT’s goal is to generate a language model, only the encoder mechanism is necessary.
 Include image from ppt
 
