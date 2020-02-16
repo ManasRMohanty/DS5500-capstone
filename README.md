@@ -10,12 +10,25 @@ Understanding the clinical timeline is crucial in determining a patient's diagno
 
 The primary approach taken by all the researchers on this task was to implement a combination of rule based and machine learning based NLP system. The challenge faced while implementing a machine learning based method here is limitations in availability of data and thus the trained model did not generalize well. In this project, for the machine learning part, we propose the usage of one of the pre-trained models(BERT variants such as BioBERT, ClinicalBERT), which are previously trained on a big corpus of biomedical and clinical texts, to generate the word embeddings and perform entity extraction by either fine tuning the upper layers or training a new model by passing the word embeddings to a new network(transfer learning).
 
-Our focus during the first half of the project will be to extract all the clinical entities of interest. There are two entities primarily involved in this project; events and temporal expressions. Event here means all clinically relevant events and situations, including symptoms, tests, procedures, and other occurrences. Temporal expressions include all expressions related to time, such as dates, times, frequencies, and durations.
+# Concepts  
 
-In the second phase of the project, we are planning to develop machine learning models to extract temporal relations (e.g. before, after, simultaneous, etc.) that hold between different events or between events and temporal expressions. Incase time permits, we are planning to use the word embeddings to build a knowledge graph in order to experiment and check the benefits. All our models will be hosted using AWS/GCP.
+What are word embeddings?
+A word embedding is a learned representation for text where words that have the same meaning have a similar representation.(src- Machinelearningmastery.com). Key to the approach is the idea of using a dense distributed representation for each word.
+Each word is represented by a real-valued vector, often tens or hundreds of dimensions. This is contrasted to the thousands or millions of dimensions required for sparse word representations, such as a one-hot encoding.
+
+How BERT works?
+BERT makes use of Transformer, an attention mechanism that learns contextual relations between words (or sub-words) in a text. In its vanilla form, Transformer includes two separate mechanisms — an encoder that reads the text input and a decoder that produces a prediction for the task. Since BERT’s goal is to generate a language model, only the encoder mechanism is necessary.
+Include image from ppt
+
 
 # Proposed Plan of Research
+
+We propose to complete the project in two phases.
+
+
 # Stage One
+
+First, we focus on literature survery where we delve deeper into understanding the problem statement, the possible applications it can have to facilitate living, what are the potential roadblocks and challenges we might have to encounter during the project, what are the existing approaches and how we suggest a  novel approach to the same problem. After a thorough reasearch, we will extract all the clinical entities of interest. There are two entities primarily involved in this project; events and temporal expressions. Event here means all clinically relevant events and situations, including symptoms, tests, procedures, and other occurrences. Temporal expressions include all expressions related to time, such as dates, times, frequencies, and durations. To enlist them,
 
 • Define scope for rule based and machine learning based approach
 • Extract all the clinical entities of interest.
@@ -24,11 +37,28 @@ In the second phase of the project, we are planning to develop machine learning 
 
 # Stage Two
 
-• Develop machine learning models and rule based processor to extract temporal relations (e.g. before, after, simultaneous, etc.) that hold between different events or between events and temporal expressions.
-• Build a knowledge graph in order to experiment and check the benefits. All our models will be hosted using AWS.
+In the second stage, we plan to develop machine learning models to extract temporal relations (e.g. before, after, simultaneous, etc.) that hold between different events or between events and temporal expressions. In case time permits, we are planning to use the word embeddings to build a knowledge graph in order to experiment and check the benefits. All our models will be hosted using AWS/GCP. We alos aim to make a Web based application to run this model to extract temporal relations deployed on Flask.
 
 # Evaluation Metrics
+
+# F1 score
+F1 score, by definition, serves as a fairly good estimate in the field of information retrieval for document classification. Since our project finds application in text processing, we propose to use F1- score as our evaluation metric.
+F1 score is traditionally, the harmonic mean of Precision and Recall. 
+
+more here. about how this is useful for us here. 
+
+test data entitites capture??
+
 # Preliminary Results
+
+#docs?
+#words
+#events
+#time entries
+#baseline model ran on the outer layer
+layer 0 output
+retrain on next layers
+
 # References
  
 • 2012 i2b2 challenge: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3756273/
