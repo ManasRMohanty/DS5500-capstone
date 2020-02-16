@@ -14,3 +14,9 @@ Our focus during the first half of the project will be to extract all the clinic
 
 In the second phase of the project, we are planning to develop machine learning models to extract temporal relations (e.g. before, after, simultaneous, etc.) that hold between different events or between events and temporal expressions. Incase time permits, we are planning to use the word embeddings to build a knowledge graph in order to experiment and check the benefits. All our models will be hosted using AWS/GCP.
 
+# Proposed Plan of Research
+# Stage One
+# Stage Two
+# Evaluation Metrics
+# Preliminary Results
+# References
