@@ -16,7 +16,17 @@ In the second phase of the project, we are planning to develop machine learning 
 
 # Proposed Plan of Research
 # Stage One
+
+• Define scope for rule based and machine learning based approach
+• Extract all the clinical entities of interest.
+• Identify which attention layer output embedding to use
+• Compare performance from different clinical BERT variant based approach
+
 # Stage Two
+
+• Develop machine learning models and rule based processor to extract temporal relations (e.g. before, after, simultaneous, etc.) that hold between different events or between events and temporal expressions.
+• Build a knowledge graph in order to experiment and check the benefits. All our models will be hosted using AWS.
+
 # Evaluation Metrics
 # Preliminary Results
 # References
