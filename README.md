@@ -20,3 +20,14 @@ In the second phase of the project, we are planning to develop machine learning 
 # Evaluation Metrics
 # Preliminary Results
 # References
+ 
+• 2012 i2b2 challenge: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3756273/
+• BERT: https://arxiv.org/abs/1810.04805
+• Clinical BERT: https://arxiv.org/abs/1904.03323
+• BIOBERT: https://arxiv.org/abs/1901.08746
+• KGBERT: https://arxiv.org/abs/1909.03193
+• https://en.wikipedia.org/wiki/Natural_language_processing
+• https://expertsystem.com/entity-extraction-work/
+• https://yashuseth.blog/2019/10/08/introduction-question- answering-knowledge-graphs-kgqa/
+• https://www.semanticscholar.org/paper/Named-Entity- Recognition-using-Word-Embedding-as-a-Seok- Song/e4625b1616be1b05fa0fe3427ca4e6d3a8ba9b74
+• https://towardsdatascience.com/introduction-to-word- embedding-and-word2vec-652d0c2060fa
