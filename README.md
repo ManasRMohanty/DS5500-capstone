@@ -65,7 +65,7 @@ test data entitites capture??
 layer 0 output
 retrain on next layers
 
-![Image description]('/DS5500-capstone/Sample Discharge note.JPG')
+![Sample Discharge Note](/DS5500-capstone/Sample Discharge note.JPG)
 
 # References
  
