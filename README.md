@@ -78,8 +78,8 @@ retrain on next layers
 
 • https://expertsystem.com/entity-extraction-work/
 
-• https://yashuseth.blog/2019/10/08/introduction-question- answering-knowledge-graphs-kgqa/
+• https://yashuseth.blog/2019/10/08/introduction-question-answering-knowledge-graphs-kgqa/
 
-• https://www.semanticscholar.org/paper/Named-Entity- Recognition-using-Word-Embedding-as-a-Seok- Song/e4625b1616be1b05fa0fe3427ca4e6d3a8ba9b74
+• https://www.semanticscholar.org/paper/Named-Entity-Recognition-using-Word-Embedding-as-a-Seok- Song/e4625b1616be1b05fa0fe3427ca4e6d3a8ba9b74
 
-• https://towardsdatascience.com/introduction-to-word- embedding-and-word2vec-652d0c2060fa
+• https://towardsdatascience.com/introduction-to-word-embedding-and-word2vec-652d0c2060fa
