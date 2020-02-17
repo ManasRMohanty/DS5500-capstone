@@ -65,7 +65,7 @@ test data entitites capture??
 layer 0 output
 retrain on next layers
 
-Sample Discharge note.JPG
+![Image description](Sample Discharge note.JPG)
 
 # References
  
