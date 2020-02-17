@@ -18,11 +18,20 @@ connection missing
 A word embedding is a learned representation for text where words that have the same meaning have a similar representation.(src- Machinelearningmastery.com). Key to the approach is the idea of using a dense distributed representation for each word.
 Each word is represented by a real-valued vector, often tens or hundreds of dimensions. This is contrasted to the thousands or millions of dimensions required for sparse word representations, such as a one-hot encoding.
 
-##How BERT works?
+Why word embeddings perform poorly on NLP tasks?
 
-BERT makes use of Transformer, an attention mechanism that learns contextual relations between words (or sub-words) in a text. In its vanilla form, Transformer includes two separate mechanisms — an encoder that reads the text input and a decoder that produces a prediction for the task. Since BERT’s goal is to generate a language model, only the encoder mechanism is necessary.
+Word embdding representations fail to capture the context;i.e. embedding for a word remains the same irresepective of it's sorrounding words. For many NLP tasks, such as Named Entity Recognition, Sentiment Analysis, Question Answering etc the context of the text is the most critical aspect to caputre for building an effective system. Thus, over the years researchers have put thier focus on building models to generate contexutal word embeddings. Machine learning models with complex Neural Network architecture(Such as RNN, LSTM etc) have been trained for this purpose.
+
+Why it is difficult to build an effective model for NLP from scratch?
+
+Due to the size of vocabulary of languages, it is challenging to train a machine learning language model which generalises well unless the dataset is large enough. Even though the dataset is very large, the challenge with infrastructure requirements for training a model is difficult to tackle with. So it is preferable if a pretrained model is readily available, which can be used with transfer learning/fine tuning for different NLP tasks.
+
+What is BERT and how BERT works?
+
+BERT(Bidirectional Encoder Representations from Transformers) is one of the state of the art pretrained models available. It is pretrained on Wikipedia corpus, with hidden words and next sentence prediction activities. It's bidirection property makes it better than previously available architectures(RNN, LSTM etc) in terms of capturing the context. BERT makes use of Transformer, an attention mechanism that learns contextual relations between words (or sub-words) in a text. In its vanilla form, Transformer includes two separate mechanisms — an encoder that reads the text input and a decoder that produces a prediction for the task.
+
 Include image from ppt
-
+![BERT Architecture](https://miro.medium.com/max/1095/0*ViwaI3Vvbnd-CJSQ.png)
 
 # Proposed Plan of Research
 
@@ -62,7 +71,7 @@ test data entitites capture??
 #events
 #time entries
 #baseline model ran on the outer layer
-layer 0 output
+layer 12 output
 retrain on next layers
 
 ![Sample Discharge Note](/DS5500-capstone/Sample Discharge note.JPG)
