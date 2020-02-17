@@ -30,8 +30,9 @@ What is BERT and how BERT works?
 
 BERT(Bidirectional Encoder Representations from Transformers) is one of the state of the art pretrained models available. It is pretrained on Wikipedia corpus, with hidden words and next sentence prediction activities. It's bidirection property makes it better than previously available architectures(RNN, LSTM etc) in terms of capturing the context. BERT makes use of Transformer, an attention mechanism that learns contextual relations between words (or sub-words) in a text. In its vanilla form, Transformer includes two separate mechanisms — an encoder that reads the text input and a decoder that produces a prediction for the task.
 
-Include image from ppt
-![BERT Architecture](https://miro.medium.com/max/1095/0*ViwaI3Vvbnd-CJSQ.png)
+<img src="https://miro.medium.com/max/1095/0*ViwaI3Vvbnd-CJSQ.png" height="300" width="400" class="center">
+
+                                                         BERT architecture 
 
 # Proposed Plan of Research
 
