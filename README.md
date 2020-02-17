@@ -13,12 +13,12 @@ The primary approach taken by all the researchers on this task was to implement 
 # Concepts  
 connection missing 
 
-What are word embeddings?
+##What are word embeddings?
 
 A word embedding is a learned representation for text where words that have the same meaning have a similar representation.(src- Machinelearningmastery.com). Key to the approach is the idea of using a dense distributed representation for each word.
 Each word is represented by a real-valued vector, often tens or hundreds of dimensions. This is contrasted to the thousands or millions of dimensions required for sparse word representations, such as a one-hot encoding.
 
-How BERT works?
+##How BERT works?
 
 BERT makes use of Transformer, an attention mechanism that learns contextual relations between words (or sub-words) in a text. In its vanilla form, Transformer includes two separate mechanisms — an encoder that reads the text input and a decoder that produces a prediction for the task. Since BERT’s goal is to generate a language model, only the encoder mechanism is necessary.
 Include image from ppt
@@ -29,7 +29,7 @@ Include image from ppt
 We propose to complete the project in two phases.
 
 
-# Stage One
+## Stage One
 
 First, we focus on literature survery where we delve deeper into understanding the problem statement, the possible applications it can have to facilitate living, what are the potential roadblocks and challenges we might have to encounter during the project, what are the existing approaches and how we suggest a  novel approach to the same problem. After a thorough reasearch, we will extract all the clinical entities of interest. There are two entities primarily involved in this project; events and temporal expressions. Event here means all clinically relevant events and situations, including symptoms, tests, procedures, and other occurrences. Temporal expressions include all expressions related to time, such as dates, times, frequencies, and durations. To enlist them,
 
@@ -41,13 +41,13 @@ First, we focus on literature survery where we delve deeper into understanding t
 
 • Compare performance from different clinical BERT variant based approach
 
-# Stage Two
+## Stage Two
 
 In the second stage, we plan to develop machine learning models to extract temporal relations (e.g. before, after, simultaneous, etc.) that hold between different events or between events and temporal expressions. In case time permits, we are planning to use the word embeddings to build a knowledge graph in order to experiment and check the benefits. All our models will be hosted using AWS/GCP. We alos aim to make a Web based application to run this model to extract temporal relations deployed on Flask.
 
 # Evaluation Metrics
 
-# F1 score
+## F1 score
 F1 score, by definition, serves as a fairly good estimate in the field of information retrieval for document classification. Since our project finds application in text processing, we propose to use F1- score as our evaluation metric.
 F1 score is traditionally, the harmonic mean of Precision and Recall. 
 
@@ -65,7 +65,7 @@ test data entitites capture??
 layer 0 output
 retrain on next layers
 
-![Image description](Sample Discharge note.JPG)
+![Image description]('DS5500-capstone/Sample Discharge note.JPG')
 
 # References
  
