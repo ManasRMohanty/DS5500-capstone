@@ -65,6 +65,8 @@ test data entitites capture??
 layer 0 output
 retrain on next layers
 
+Sample Discharge note.JPG
+
 # References
  
 • 2012 i2b2 challenge: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3756273/
