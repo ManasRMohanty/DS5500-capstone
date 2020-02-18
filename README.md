@@ -55,7 +55,7 @@ We propose to complete the project in two phases.
 
 ## Stage One
 
-First, we focus on literature survery where we delve deeper into understanding the problem statement, the possible applications it can have to facilitate living, what are the potential roadblocks and challenges we might have to encounter during the project, what are the existing approaches and how we suggest a  novel approach to the same problem. After a thorough reasearch, we will extract all the clinical entities of interest. There are two entities primarily involved in this project; events and temporal expressions. Event here means all clinically relevant events and situations, including symptoms, tests, procedures, and other occurrences. Temporal expressions include all expressions related to time, such as dates, times, frequencies, and durations. To enlist them,
+First, we focus on literature survey where we delve deeper into understanding the problem statement, the possible applications it can have to facilitate living, what are the potential roadblocks and challenges we might have to encounter during the project, what are the existing approaches and how we suggest a  novel approach to the same problem. After a thorough reasearch, we will extract all the clinical entities of interest. There are two entities primarily involved in this project; events and temporal expressions. Event here means all clinically relevant events and situations, including symptoms, tests, procedures, and other occurrences. Temporal expressions include all expressions related to time, such as dates, times, frequencies, and durations. To enlist them,
 
 • Define scope for rule based and machine learning based approach
 
