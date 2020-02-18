@@ -11,7 +11,6 @@ Understanding the clinical timeline is crucial in determining a patient's diagno
 The primary approach taken by all the researchers on this task was to implement a combination of rule based and machine learning based NLP system. The challenge faced while implementing a machine learning based method here is limitations in availability of data and thus the trained model did not generalize well. In this project, for the machine learning part, we propose the usage of one of the pre-trained models(BERT variants such as BioBERT, ClinicalBERT), which are previously trained on a big corpus of biomedical and clinical texts, to generate the word embeddings and perform entity extraction by either fine tuning the upper layers or training a new model by passing the word embeddings to a new network(transfer learning).
 
 # Concepts  
-connection missing 
 
 ### What are word embeddings?
 
