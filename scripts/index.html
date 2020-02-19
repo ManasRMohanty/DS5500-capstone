@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<script>
+
+    $(document).ready(function() {
+        console.log('Jquery working');
+        $('#submit').click(function(event) {
+            event.preventDefault();
+            console.log('Submit button clicked');
+            var text = $('#textarea').val();
+            console.log(text);
+            $("#output").html("<p>Loading</p>");
+
+            $.ajax({
+                url: 'http://localhost:5000/api/runModel',
+                contentType: "application/json",
+                data: JSON.stringify({myData: text}),
+                dataType: 'json',
+                type: 'POST',
+                success: function(res) {
+                    console.log('response');
+                    console.log(res);
+                    $('#output').html(res);
+                },
+                error: function(err) {
+                    console.log('error');
+                    console.log(err);
+                }
+            });
+        });
+    });
+</script>
+
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Clinical Event and Temporal Information Extraction</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>Discharge Note</h3>
+            <form>
+                <div class="form-group">
+                    <!--<label for="exampleFormControlTextarea1">Discharge Note</label>-->
+                    <textarea class="form-control" id="textarea" rows="20"></textarea>
+                </div>
+                <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        
+        <div class="col-sm-6">
+            <h4>Tagged data &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:#00FF00;">Event</span><span class="float-right" style="background-color:cyan;">Temporal Information</span></h4>
+            <br>
+            <div>
+                <p id="output"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

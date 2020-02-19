@@ -33,18 +33,22 @@ test_data(self,data):
 Tests the model, classifies the words in given data and returns accuracy, f1 score and confusion matrix results.
 '''
 
-def resolve_continuity(text,words,ignore_letter_list):
+def resolve_continuity(text,words,ignore_letter_list=[]):
     list_of_positions = []
-    first_entry = False
+    first_entry = True
     prev_entry = None
-    for entry in words:
+    
+    for index,entry in words.iterrows():
         if(not first_entry):
             if(entry['entity_flag']==prev_entry['entity_flag']):
                 in_between_text = text[prev_entry["end_pos"]:entry["begin_pos"]]
-                in_between_text = re.sub(ignore_letter_list, ' ', in_between_text)
+                for letter in ignore_letter_list:
+                    in_between_text = re.sub(letter, ' ', in_between_text)
                 if(len(in_between_text.strip())==0):
                     prev_entry["end_pos"] = entry["end_pos"]
-                    prev_entry["prediction_Probability"] = (prev_entry["prediction_Probability"] + entry["prediction_Probability"])/2
+                    prev_entry["word"] = text[prev_entry["begin_pos"]:prev_entry["end_pos"]]
+                    prev_entry["event_probab"] = (prev_entry["event_probab"] + entry["event_probab"])/2
+                    prev_entry["timex_probab"] = (prev_entry["timex_probab"] + entry["timex_probab"])/2
                 else:
                     list_of_positions.append(prev_entry)
                     prev_entry = entry
@@ -53,6 +57,7 @@ def resolve_continuity(text,words,ignore_letter_list):
                 prev_entry = entry
         else:
             prev_entry = entry
+            first_entry =False
             
     if(prev_entry is not None):
         list_of_positions.append(prev_entry)
