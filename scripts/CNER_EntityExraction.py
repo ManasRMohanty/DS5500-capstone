@@ -4,7 +4,7 @@ import re
 
 from sklearn import model_selection 
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import confusion_matrix,f1_score
+from sklearn.metrics import confusion_matrix,f1_score, precision_score, recall_score
 
 import pickle
 
@@ -39,11 +39,15 @@ def resolve_continuity(text,words,ignore_letter_list):
     prev_entry = None
     for entry in words:
         if(not first_entry):
-            in_between_text = text[prev_entry["end_pos"]:entry["begin_pos"]]
-            in_between_text = re.sub(ignore_letter_list, ' ', in_between_text)
-            if(len(in_between_text.strip())==0):
-                prev_entry["end_pos"] = entry["end_pos"]
-                prev_entry["prediction_Probability"] = (prev_entry["prediction_Probability"] + entry["prediction_Probability"])/2
+            if(entry['entity_flag']==prev_entry['entity_flag']):
+                in_between_text = text[prev_entry["end_pos"]:entry["begin_pos"]]
+                in_between_text = re.sub(ignore_letter_list, ' ', in_between_text)
+                if(len(in_between_text.strip())==0):
+                    prev_entry["end_pos"] = entry["end_pos"]
+                    prev_entry["prediction_Probability"] = (prev_entry["prediction_Probability"] + entry["prediction_Probability"])/2
+                else:
+                    list_of_positions.append(prev_entry)
+                    prev_entry = entry
             else:
                 list_of_positions.append(prev_entry)
                 prev_entry = entry
@@ -111,7 +115,15 @@ class EntityExtraction():
         accuracy = clf.score(X,y)
         print("Score on test data:",accuracy)
         print(confusion_matrix(y,y_pred))
-        f1_score_test = f1_score(y, y_pred, average='micro')
+        f1_score_test = f1_score(y, y_pred)
         print("F1 Score:",f1_score_test)
 
-        return [accuracy,f1_score_test]
+        precision = precision_score(y, y_pred)
+        recall = recall_score(y,y_pred)
+
+        print("Precision:",precision)
+        print("Recall:",recall)
+
+        return [accuracy,f1_score_test,precision,recall]
+
+        

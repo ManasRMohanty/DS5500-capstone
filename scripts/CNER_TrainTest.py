@@ -80,11 +80,15 @@ for i in range(5):
         test_results_event = entity_extraction.test_data(test_data_df)
         test_results_timex = entity_extraction_timex.test_data(test_data_df)
 
-        new_dict['event_model_accuracy'] = test_results_event[0]
         new_dict['event_model_f1'] = test_results_event[1]
-        new_dict['timex_model_accuracy'] = test_results_timex[0]
-        new_dict['event_model_f1'] = test_results_timex[1]
+        new_dict['event_model_precision'] = test_results_event[2]
+        new_dict['event_model_recall'] = test_results_event[3]
+
+        new_dict['timex_model_f1'] = test_results_timex[1]
+        new_dict['timex_model_precision'] = test_results_timex[2]
+        new_dict['timex_model_recall'] = test_results_timex[3]
+
         result_list.append(new_dict)
 
 
-pd.DataFrame(result_list).to_csv("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_results/K-fold-results.csv")
+pd.DataFrame(result_list).to_csv("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_results/K-fold-results_CBERT1.csv")
