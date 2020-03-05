@@ -68,29 +68,35 @@ for file in pbar(os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-ca
 '''
 
 
-for bert_layer in [7,8,9,10,11,12]:
-    new_dict = {}
-    new_dict['bert_layer'] = bert_layer
+new_dict = {}
+new_dict['bert_layer'] = 12
 
-    print("Layer:",bert_layer)
+print("Layer:",12)
 
-    entity_extraction = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/event.pkl","event_flag",bert_layer=bert_layer)
-    entity_extraction_timex = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/timex.pkl","timex_flag",downsample_multiplier=4,bert_layer=bert_layer)
-    
-    entity_extraction.fit(word_list_train_df)
-    entity_extraction_timex.fit(word_list_train_df)
-    
-    test_results_event = entity_extraction.test_data(word_list_test_df)
-    test_results_timex = entity_extraction_timex.test_data(word_list_test_df)
+entity_extraction = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/event.pkl","event_flag",last_layer_only=True)
+entity_extraction_timex = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/timex.pkl","timex_flag",last_layer_only=True)
 
-    new_dict['event_model_f1'] = test_results_event[1]
-    new_dict['event_model_precision'] = test_results_event[2]
-    new_dict['event_model_recall'] = test_results_event[3]
+entity_extraction.fit(word_list_train_df)
+entity_extraction_timex.fit(word_list_train_df)
 
-    new_dict['timex_model_f1'] = test_results_timex[1]
-    new_dict['timex_model_precision'] = test_results_timex[2]
-    new_dict['timex_model_recall'] = test_results_timex[3]
+print("Training data results")
+entity_extraction.test_data(word_list_train_df)
+entity_extraction_timex.test_data(word_list_train_df)
 
-    result_list.append(new_dict)
+print("Test data results")
+test_results_event = entity_extraction.test_data(word_list_test_df)
+test_results_timex = entity_extraction_timex.test_data(word_list_test_df)
 
-pd.DataFrame(result_list).to_csv("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_results/K-fold-results_fine_tune_comb.csv")
+'''
+new_dict['event_model_f1'] = test_results_event[1]
+new_dict['event_model_precision'] = test_results_event[2]
+new_dict['event_model_recall'] = test_results_event[3]
+
+new_dict['timex_model_f1'] = test_results_timex[1]
+new_dict['timex_model_precision'] = test_results_timex[2]
+new_dict['timex_model_recall'] = test_results_timex[3]
+
+result_list.append(new_dict)
+
+#pd.DataFrame(result_list).to_csv("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_results/K-fold-results_fine_tune_comb.csv")
+'''

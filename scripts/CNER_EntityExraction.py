@@ -65,13 +65,14 @@ def resolve_continuity(text,words,ignore_letter_list=[]):
     return list_of_positions
 
 class EntityExtraction():
-    def __init__(self, model_path,column_name,ignore_letter_list='[ ]',downsample=False,downsample_multiplier=1,bert_layer=0):
+    def __init__(self, model_path,column_name,ignore_letter_list='[ ]',downsample=False,downsample_multiplier=1,bert_layer=0,last_layer_only=False):
         self.model_path = model_path
         self.column_name_for_flag = column_name
         self.ignore_letter_list = ignore_letter_list
         self.downsample = downsample
         self.downsample_multiplier = downsample_multiplier
         self.bert_layer = bert_layer
+        self.last_layer_only = last_layer_only
         
     def fit(self, data):
         pos_data = data[data[self.column_name_for_flag]==1]
@@ -83,7 +84,11 @@ class EntityExtraction():
         
         combined_data = pd.concat([pos_data,neg_data])
         
-        combined_data['input_vector'] = combined_data.apply(lambda x: x['keyword_vector'][self.bert_layer],axis=1)
+        if(self.last_layer_only):
+            combined_data['input_vector'] = combined_data.apply(lambda x: x['keyword_vector'],axis=1)
+        else:    
+            combined_data['input_vector'] = combined_data.apply(lambda x: x['keyword_vector'][self.bert_layer],axis=1)
+        
         
         X = np.vstack(list(combined_data["input_vector"]))                                
         y = combined_data[self.column_name_for_flag]  
@@ -91,7 +96,10 @@ class EntityExtraction():
         pickle.dump(clf,open(self.model_path,'wb'))
     
     def predict_proba(self,data):
-        data['input_vector'] = data.apply(lambda x: x['keyword_vector'][self.bert_layer],axis=1)
+        if(self.last_layer_only):
+            data['input_vector'] = data.apply(lambda x: x['keyword_vector'],axis=1)
+        else:    
+            data['input_vector'] = data.apply(lambda x: x['keyword_vector'][self.bert_layer],axis=1)
         
         X = np.vstack(list(data["input_vector"]))                                
         
@@ -100,22 +108,36 @@ class EntityExtraction():
         return clf.predict_proba(X)
     
     def predict(self,data):
-        data['input_vector'] = data.apply(lambda x: x['keyword_vector'][self.bert_layer],axis=1)
+        if(self.last_layer_only):
+            data['input_vector'] = data.apply(lambda x: x['keyword_vector'],axis=1)
+        else:    
+            data['input_vector'] = data.apply(lambda x: x['keyword_vector'][self.bert_layer],axis=1)
+        
         
         X = np.vstack(list(data["input_vector"]))                                
         
         clf = pickle.load(open(self.model_path,'rb'))
+
+        y_pred = [1 if(ent>=0.9) else 0 for ent in clf.predict_proba(X)]
         
-        return clf.predict(X)
+        print(y_pred)
+        return y_pred
+        #return clf.predict(X)
         
     def test_data(self,data):
-        data['input_vector'] = data.apply(lambda x: x['keyword_vector'][self.bert_layer],axis=1)
+        if(self.last_layer_only):
+            data['input_vector'] = data.apply(lambda x: x['keyword_vector'],axis=1)
+        else:    
+            data['input_vector'] = data.apply(lambda x: x['keyword_vector'][self.bert_layer],axis=1)
+        
         
         X = np.vstack(list(data["input_vector"]))                                                                
         y = data[self.column_name_for_flag]   
         
         clf = pickle.load(open(self.model_path,'rb'))
-        y_pred = clf.predict(X)
+        #y_pred = clf.predict(X)
+
+        y_pred = [1 if(ent>0.9) else 0 for ent in clf.predict_proba(X)]
         
         accuracy = clf.score(X,y)
         print("Score on test data:",accuracy)

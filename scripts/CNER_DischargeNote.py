@@ -30,10 +30,9 @@ For understanding how the file looks like, we have attached a sample xml in git,
 def is_available_in_pos_list(dict_list, begin_pos, end_pos):
     for entry in dict_list:
         if(entry["start"]<=begin_pos and entry["end"]>=end_pos):
-            return True
-
-    return False
-
+            return [True,entry]
+    
+    return [False,{}]
 
 class DischargeNote():
     def __init__(self, root,file_name,baseline=True):
@@ -45,11 +44,13 @@ class DischargeNote():
         root = self.xml_root
         text_section = root.find('TEXT')
         text = text_section.text
+        
+        self.text = text
 
         if(self.baseline):
             self.processed_text = process_string(text,1)
         else:
-            self.processed_text = process_string_finetune(text,1)
+            self.processed_text = process_string_finetune(text,1,output_layer_only=True)
             
         tag_section = root.find('TAGS')
         event_list = []
@@ -63,8 +64,6 @@ class DischargeNote():
                 timex_list.append(child.attrib)
             elif(child.tag=='TLINK'):
                 tlink_list.append(child.attrib)
-            elif(child.tag=='SECTIME'):
-                sectime_list.append(child.attrib)
         """
         They are stored as strings. So we are converting them to integers
         """
@@ -76,22 +75,18 @@ class DischargeNote():
             sub["start"] = int(sub["start"])
             sub["end"] = int(sub["end"])
 
-        for sub in sectime_list:
-            sub["start"] = int(sub["start"])
-            sub["end"] = int(sub["end"])
-
 
         event_list = sorted(event_list, key = lambda i: i['start'])
         timex_list = sorted(timex_list, key = lambda i: i['start'])
-        sectime_list = sorted(sectime_list, key = lambda i: i['start'])
 
         for entry in self.processed_text:
             event_entry_available = is_available_in_pos_list(event_list,entry["begin_pos"],entry["end_pos"])
             timex_entry_available = is_available_in_pos_list(timex_list,entry["begin_pos"],entry["end_pos"])
-            sectime_entry_available = is_available_in_pos_list(sectime_list,entry["begin_pos"],entry["end_pos"])
 
-            entry.update({"event_flag":1 if event_entry_available else 0})
-            entry.update({"timex_flag":1 if (timex_entry_available or sectime_entry_available) else 0})
+            entry.update({"event_flag":1 if event_entry_available[0] else 0})
+            entry.update({"event_details":event_entry_available[1]})
+            entry.update({"timex_flag":1 if (timex_entry_available) else 0})
+            entry.update({"timex_details":timex_entry_available[1]})
             entry.update({"file_name":self.file_name})
 
 
