@@ -102,6 +102,7 @@ For the purpose of this research, we will also track Precision and Recall along 
 
 # Preliminary Results
 
+# Phase 1
 Number of documents = 310
 words = 179983
 events = 63757
@@ -135,6 +136,15 @@ Confusion matrix -
 
  [  589   924]]
  
+ # Phase 2
+ 
+We processed all the tagged discharge notes available(310) and found out that there are 59085 relations available, with 8 possible relation types available. Those are:
+ 
+BEFORE - 27377, OVERLAP - 16165, AFTER - 4739, SIMULTANEOUS - 4725, BEFORE_OVERLAP - 3249, DURING - 1037, BEGUN_BY - 996
+, ENDED_BY - 797 .We also observed that there can be relation between two events, between an event and a temporal information entry and also between two temporal information entries. Below are the counts.
+
+Between two events - 25011, Between event and temporal information entry - 33681, Between two temporal information entries - 393
+
 # References
  
 • 2012 i2b2 challenge: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3756273/
