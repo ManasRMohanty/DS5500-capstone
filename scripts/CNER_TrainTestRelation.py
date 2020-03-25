@@ -1,4 +1,4 @@
-from CNER_RelationExraction import RelationExtraction
+from CNER_RelationExtraction import RelationExtraction
 from CNER_DischargeNote import DischargeNote
 
 import os
@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 from progressbar import ProgressBar
 import random
+from CNER_Config import bert_config, data_config
 
 '''
 
@@ -23,10 +24,10 @@ count = 0
 pbar = ProgressBar()
 all_files = []
 
-for file in pbar(os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/all_data/")):
+for file in pbar(os.listdir(data_config['all_data_path'])):
     try:
         if file.endswith(".xml"):
-            file_name = os.path.join("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/all_data/", file)
+            file_name = os.path.join(data_config['all_data_path'], file)
             tree = ET.parse(file_name)
             root = tree.getroot()
             discharge_note = DischargeNote(root,file,baseline=False)
@@ -50,7 +51,7 @@ train_data_df = relation_list_df[relation_list_df['file_name'].isin(train_files)
 test_data_df = relation_list_df[relation_list_df['file_name'].isin(test_files)]
 print("Length of training data:", len(train_data_df))
 
-relation_extraction = RelationExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/relation.pkl")
+relation_extraction = RelationExtraction(bert_config['relation_model_path'])
         
 relation_extraction.fit(train_data_df)
         

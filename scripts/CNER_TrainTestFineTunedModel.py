@@ -1,4 +1,4 @@
-from CNER_EntityExraction import EntityExtraction
+from CNER_EntityExtraction import EntityExtraction
 from CNER_DischargeNote import DischargeNote
 
 import os
@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 from progressbar import ProgressBar
 import random
+from CNER_Config import bert_config, data_config
 
 '''
 
@@ -19,10 +20,10 @@ count = 0
 pbar = ProgressBar()
 result_list = []
 
-for file in pbar(os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/train_data/")):
+for file in pbar(os.listdir(data_config['train_data_path'])):
     if file.endswith(".xml"):
         try:
-            file_name = os.path.join("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/train_data/", file)
+            file_name = os.path.join(data_config['train_data_path'], file)
             tree = ET.parse(file_name)
             root = tree.getroot()
             discharge_note = DischargeNote(root,file,baseline=False)
@@ -39,10 +40,10 @@ word_list_test= []
 count = 0
 pbar = ProgressBar()
 
-for file in pbar(os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_data/")):
+for file in pbar(os.listdir(data_config['test_data_path'])):
     if file.endswith(".xml"):
         try:
-            file_name = os.path.join("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_data/", file)
+            file_name = os.path.join(data_config['train_data_path'], file)
             tree = ET.parse(file_name)
             root = tree.getroot()
             discharge_note = DischargeNote(root,file,baseline=False)
@@ -79,8 +80,8 @@ new_dict['bert_layer'] = 12
 
 print("Layer:",12)
 
-entity_extraction = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/event.pkl","event_flag",last_layer_only=True)
-entity_extraction_timex = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/timex.pkl","timex_flag",last_layer_only=True)
+entity_extraction = EntityExtraction(bert_config['event_model_path'],"event_flag",last_layer_only=True)
+entity_extraction_timex = EntityExtraction(bert_config['timex_model_path'],"timex_flag",last_layer_only=True)
 
 entity_extraction.fit(word_list_train_df)
 entity_extraction_timex.fit(word_list_train_df)

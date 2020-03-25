@@ -1,8 +1,9 @@
-from CNER_EntityExraction import *
+from CNER_EntityExtraction import *
 from CNER_BertUtility import *
 from pylab import *
 import pandas as pd
 from CNER_DischargeNote import DischargeNote
+from CNER_Config import bert_config, data_config
 
 import os
 import xml.etree.ElementTree as ET
@@ -11,7 +12,7 @@ def process_text_from_xml(text):
     
     word_list_df = pd.DataFrame(process_string_finetune(text,1))
 
-    file_name = "C:/Users/itsma/Documents/Capstone project/DS5500-capstone/all_data/" + text +  ".xml"
+    file_name = data_config['all_data_path'] + text +  ".xml"
     tree = ET.parse(file_name)
     root = tree.getroot()
     discharge_note = DischargeNote(root,text,baseline=False)
@@ -19,8 +20,8 @@ def process_text_from_xml(text):
     text = discharge_note.text
     word_list_df = pd.DataFrame(discharge_note.processed_text)
 
-    entity_extraction = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/final_event.pkl","event_flag",last_layer_only=True)
-    entity_extraction_timex = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/final_timex.pkl","timex_flag",last_layer_only=True)
+    entity_extraction = EntityExtraction(bert_config["event_model_path"],"event_flag",last_layer_only=True)
+    entity_extraction_timex = EntityExtraction(bert_config["timex_model_path"],"timex_flag",last_layer_only=True)
 
     word_list_df['event_probab'] = [a[1] for a in entity_extraction.predict_proba(word_list_df)]
     word_list_df['timex_probab'] = [a[1] for a in entity_extraction_timex.predict_proba(word_list_df)]
@@ -75,8 +76,8 @@ def process_text(text):
     word_list, sentences = process_string_finetune(text,1, output_layer_only = True)
     word_list_df = pd.DataFrame(word_list)
 
-    entity_extraction = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/final_event.pkl","event_flag",last_layer_only=True)
-    entity_extraction_timex = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/final_timex.pkl","timex_flag",last_layer_only=True)
+    entity_extraction = EntityExtraction(bert_config["event_model_path"],"event_flag",last_layer_only=True)
+    entity_extraction_timex = EntityExtraction(bert_config["timex_model_path"],"timex_flag",last_layer_only=True)
 
     word_list_df['event_probab'] = [a[1] for a in entity_extraction.predict_proba(word_list_df)]
     word_list_df['timex_probab'] = [a[1] for a in entity_extraction_timex.predict_proba(word_list_df)]
