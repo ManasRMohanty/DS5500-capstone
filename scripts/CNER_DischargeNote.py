@@ -54,7 +54,8 @@ class DischargeNote():
         self.file_name = file_name
         self.baseline = baseline
 
-    def get_entity_from_id(self,id):
+    #Added for phase-2 of the project
+    def get_entity_from_id(self,id): 
         if(id.startswith("E")):
             for event in self.event_list:
                 if(event['id']==id):
@@ -63,7 +64,8 @@ class DischargeNote():
             for timex in self.timex_list:
                 if(timex['id']==id):
                     return timex
-
+    
+    #Added for phase-2 of the project
     def get_relation_from_ids(self,id1,id2):
         for tlink in self.tlink_list:
             if(tlink['fromID']==id1 and tlink['toID']==id2):
@@ -88,6 +90,7 @@ class DischargeNote():
         tag_section = root.find('TAGS')
         event_list = []
         timex_list = []
+        #Added for phase-2 of the project
         tlink_list = []
 
         for child in tag_section:
@@ -95,6 +98,7 @@ class DischargeNote():
                 event_list.append(child.attrib)
             elif(child.tag=='TIMEX3'):
                 timex_list.append(child.attrib)
+            #Added for phase-2 of the project
             elif(child.tag=='TLINK'):
                 tlink_list.append(child.attrib)
         """
@@ -111,6 +115,7 @@ class DischargeNote():
 
         self.event_list = sorted(event_list, key = lambda i: i['start'])
         self.timex_list = sorted(timex_list, key = lambda i: i['start'])
+        #Added for phase-2 of the project
         self.tlink_list = tlink_list
 
         for entry in self.processed_text:
@@ -135,6 +140,7 @@ class DischargeNote():
 
             entry.update({"file_name":self.file_name})
 
+        #Added for phase-2 of the project
         ids_list = []
         for event in self.event_list:
             ids_list.append(event['id'])
