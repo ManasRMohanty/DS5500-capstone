@@ -118,7 +118,7 @@ class EntityExtraction():
         
         clf = pickle.load(open(self.model_path,'rb'))
 
-        y_pred = [1 if(ent>=0.9) else 0 for ent in clf.predict_proba(X)]
+        y_pred = [1 if(ent[1]>=0.5) else 0 for ent in clf.predict_proba(X)]
         
         print(y_pred)
         return y_pred
@@ -135,9 +135,9 @@ class EntityExtraction():
         y = data[self.column_name_for_flag]   
         
         clf = pickle.load(open(self.model_path,'rb'))
-        #y_pred = clf.predict(X)
+        y_pred = clf.predict(X)
 
-        y_pred = [1 if(ent>0.9) else 0 for ent in clf.predict_proba(X)]
+        #y_pred = [1 if(ent[1]>=0.5) else 0 for ent in clf.predict_proba(X)]
         
         accuracy = clf.score(X,y)
         print("Score on test data:",accuracy)

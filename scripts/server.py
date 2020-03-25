@@ -21,8 +21,6 @@ def all_caps(data):
 def run_my_model():
     text = request.json['myData']
     text.replace("\n","<br>")
-    print("data from client")
-    print(text)
     res = {
         'return': 'success'
     }

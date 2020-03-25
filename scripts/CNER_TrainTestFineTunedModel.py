@@ -21,12 +21,15 @@ result_list = []
 
 for file in pbar(os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/train_data/")):
     if file.endswith(".xml"):
-        file_name = os.path.join("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/train_data/", file)
-        tree = ET.parse(file_name)
-        root = tree.getroot()
-        discharge_note = DischargeNote(root,file,baseline=False)
-        discharge_note.process_note()
-        word_list_train.extend(discharge_note.processed_text)
+        try:
+            file_name = os.path.join("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/train_data/", file)
+            tree = ET.parse(file_name)
+            root = tree.getroot()
+            discharge_note = DischargeNote(root,file,baseline=False)
+            discharge_note.process_note()
+            word_list_train.extend(discharge_note.processed_text)
+        except:
+            print("Error processing file:",file)
 
 word_list_train_df = pd.DataFrame(word_list_train)
 
@@ -38,12 +41,15 @@ pbar = ProgressBar()
 
 for file in pbar(os.listdir("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_data/")):
     if file.endswith(".xml"):
-        file_name = os.path.join("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_data/", file)
-        tree = ET.parse(file_name)
-        root = tree.getroot()
-        discharge_note = DischargeNote(root,file,baseline=False)
-        discharge_note.process_note()
-        word_list_test.extend(discharge_note.processed_text)
+        try:
+            file_name = os.path.join("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/test_data/", file)
+            tree = ET.parse(file_name)
+            root = tree.getroot()
+            discharge_note = DischargeNote(root,file,baseline=False)
+            discharge_note.process_note()
+            word_list_test.extend(discharge_note.processed_text)
+        except:
+            print("Error processing file:",file)
 
 word_list_test_df = pd.DataFrame(word_list_test)
 

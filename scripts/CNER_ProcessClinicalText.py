@@ -71,10 +71,12 @@ def process_text_from_xml(text):
 def process_text(text):
     if(len(text)<=3):
         return process_text_from_xml(text)
-    word_list_df = pd.DataFrame(process_string_finetune(text,1))
 
-    entity_extraction = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/final_event.pkl","event_flag",bert_layer=12)
-    entity_extraction_timex = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/final_timex.pkl","timex_flag",bert_layer=12)
+    word_list, sentences = process_string_finetune(text,1, output_layer_only = True)
+    word_list_df = pd.DataFrame(word_list)
+
+    entity_extraction = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/final_event.pkl","event_flag",last_layer_only=True)
+    entity_extraction_timex = EntityExtraction("C:/Users/itsma/Documents/Capstone project/DS5500-capstone/models/final_timex.pkl","timex_flag",last_layer_only=True)
 
     word_list_df['event_probab'] = [a[1] for a in entity_extraction.predict_proba(word_list_df)]
     word_list_df['timex_probab'] = [a[1] for a in entity_extraction_timex.predict_proba(word_list_df)]
@@ -113,5 +115,5 @@ def process_text(text):
     processed_text = processed_text + text[last_position:]
 
     processed_text.replace('\n', '<br>').replace('\r', '<br>')
-    print("<br />".join(processed_text.split("\n")))
+    
     return "<br />".join(processed_text.split("\n"))
