@@ -72,7 +72,23 @@ First, we focus on literature survey where we delve deeper into understanding th
 
 ## Stage Two
 
-In the second stage, we plan to develop machine learning models to extract temporal relations (e.g. before, after, simultaneous, etc.) that hold between different events or between events and temporal expressions. For this purpose we are planning to implement a recently published paer on Span-based Joint Entity and Relation Extraction with Transformer Pre-training. In case time permits, we are planning to use the word embeddings to build a knowledge graph in order to experiment and check the benefits. All our models will be hosted using AWS/GCP. We alos aim to make a Web based application to run this model to extract temporal relations deployed on Flask.
+For extracting relations between entities extracted from phase 1, we propose to use the ideas suggested by Liang
+Yao et al. in the paper KG-BERT(BERT for Knowledge Graph Completion). Knowledge graphs is a knowledge base used by Google and its
+services to enhance its search engine's results with information gathered from a variety of sources. At a high level, It is a set of nodes and edges(may be directed or undirected) connecting the nodes, where a node represents an individual data entity and an edge between two nodes represents connection between the entities represented by the node.
+
+KG-BERT proposals: The authors proposed to build a knowledge graph using BERT based classification models. These models can be trained in two possible ways -
+
+a) Training BERT by passing the text [CLS]<entity1>[SEP]<relation name>[SEP]<entity2>[SEP] as an input and label(0 or 1), 1 if there is a relation between the entities specified by relation name and 0 otherwise. The model is then trained to minimise cross entropy loss by
+applying logistic regression to the final layer embedding. Here [CLS] and [SEP] are special tokens, identified by BERT as classification
+and separator tokens. For a given entry, BERT only uses the embedding for[CLS] token in the last layer to classify the entry.
+
+b) Given there can be n possible types of relation between entities, training BERT by passing the text [CLS]<entity1>[SEP]<entity2>[SEP] as an input and label(0...n), where label represents relationship type. The model is then trained to minimise cross entropy loss of multiclass classification. Similar to above, BERT uses the embedding for[CLS] token in the last layer to classify the entry.
+
+
+Using embeddings from phase 1: We propose to implement training method b from KG-BERT with a slight variation. Instead of training a BERT model for relation extraction, our method can use the embeddings for the entities generated from phase 1. Then we can train a multi-class classification model by passing <Entity1 Embedding><Entity2 Embedding>. We do not need to use the special tokens here, as the individual embeddings are of fixed size(768 in our case). We are planning to add negative cases for each relationship type by sampling from events and temporal information which do not have any relation between them.
+
+At the end of phase 2, we are planning to form a containerised solution by putting our code along with its dependencies into a docker, which then can be deployed into any Amazon Web Services instance. We suggest Docker as a deployment solution for continuous integration over multiple platforms without any compatibility concerns.It will enable a smooth cycle between development, test, production, and customer environments.
+
 
 # Evaluation Metrics
 
@@ -86,6 +102,7 @@ For the purpose of this research, we will also track Precision and Recall along 
 
 # Preliminary Results
 
+# Phase 1
 Number of documents = 310
 words = 179983
 events = 63757
@@ -119,6 +136,15 @@ Confusion matrix -
 
  [  589   924]]
  
+ # Phase 2
+ 
+We processed all the tagged discharge notes available(310) and found out that there are 59085 relations available, with 8 possible relation types available. Those are:
+ 
+BEFORE - 27377, OVERLAP - 16165, AFTER - 4739, SIMULTANEOUS - 4725, BEFORE_OVERLAP - 3249, DURING - 1037, BEGUN_BY - 996
+, ENDED_BY - 797 .We also observed that there can be relation between two events, between an event and a temporal information entry and also between two temporal information entries. Below are the counts.
+
+Between two events - 25011, Between event and temporal information entry - 33681, Between two temporal information entries - 393
+
 # References
  
 • 2012 i2b2 challenge: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3756273/
