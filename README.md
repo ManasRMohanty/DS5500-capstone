@@ -74,26 +74,20 @@ First, we focus on literature survey where we delve deeper into understanding th
 
 For extracting relations between entities extracted from phase 1, we propose to use the ideas suggested by Liang
 Yao et al. in the paper KG-BERT(BERT for Knowledge Graph Completion). Knowledge graphs is a knowledge base used by Google and its
-services to enhance its search engine's results with information gathered from a variety of sources. At a high level, It is a set of nodes and
-edges(may be directed or undirected) connecting the nodes, where a node represents an individual data entity and an edge between two nodes
-represents connection between the entities represented by the node.
-KG-BERT proposals: The authors proposed to build a knowledge graph using BERT based classification models. These models can be trained in
-two possible ways -
-a) Training BERT by passing the text [CLS]<entity1>[SEP]<relation name>[SEP]<entity2>[SEP] as an input and label(0 or 1), 1 if there is a
-relation between the entities specified by relation name and 0 otherwise. The model is then trained to minimise cross entropy loss by
+services to enhance its search engine's results with information gathered from a variety of sources. At a high level, It is a set of nodes and edges(may be directed or undirected) connecting the nodes, where a node represents an individual data entity and an edge between two nodes represents connection between the entities represented by the node.
+
+KG-BERT proposals: The authors proposed to build a knowledge graph using BERT based classification models. These models can be trained in two possible ways -
+
+a) Training BERT by passing the text [CLS]<entity1>[SEP]<relation name>[SEP]<entity2>[SEP] as an input and label(0 or 1), 1 if there is a relation between the entities specified by relation name and 0 otherwise. The model is then trained to minimise cross entropy loss by
 applying logistic regression to the final layer embedding. Here [CLS] and [SEP] are special tokens, identified by BERT as classification
 and separator tokens. For a given entry, BERT only uses the embedding for[CLS] token in the last layer to classify the entry.
-b) Given there can be n possible types of relation between entities, training BERT by passing the text [CLS]<entity1>[SEP]<entity2>[SEP] as
-an input and label(0...n), where label represents relationship type. The model is then trained to minimise cross entropy loss of multiclass
-classification. Similar to above, BERT uses the embedding for[CLS] token in the last layer to classify the entry.
-Using embeddings from phase 1: We propose to implement training method b from KG-BERT with a slight variation. Instead of training a BERT
-model for relation extraction, our method can use the embeddings for the entities generated from phase 1. Then we can train a multi-class
-classification model by passing <Entity1 Embedding><Entity2 Embedding>. We do not need to use the special tokens here, as the individual
-embeddings are of fixed size(768 in our case). We are planning to add negative cases for each relationship type by sampling from events and
-temporal information which do not have any relation between them.
-At the end of phase 2, we are planning to form a containerised solution by putting our code along with its dependencies into a docker, which then
-can be deployed into any Amazon Web Services instance. We suggest Docker as a deployment solution for continuous integration over multiple
-platforms without any compatibility concerns.It will enable a smooth cycle between development, test, production, and customer environments.
+
+b) Given there can be n possible types of relation between entities, training BERT by passing the text [CLS]<entity1>[SEP]<entity2>[SEP] as an input and label(0...n), where label represents relationship type. The model is then trained to minimise cross entropy loss of multiclass classification. Similar to above, BERT uses the embedding for[CLS] token in the last layer to classify the entry.
+
+
+Using embeddings from phase 1: We propose to implement training method b from KG-BERT with a slight variation. Instead of training a BERT model for relation extraction, our method can use the embeddings for the entities generated from phase 1. Then we can train a multi-class classification model by passing <Entity1 Embedding><Entity2 Embedding>. We do not need to use the special tokens here, as the individual embeddings are of fixed size(768 in our case). We are planning to add negative cases for each relationship type by sampling from events and temporal information which do not have any relation between them.
+
+At the end of phase 2, we are planning to form a containerised solution by putting our code along with its dependencies into a docker, which then can be deployed into any Amazon Web Services instance. We suggest Docker as a deployment solution for continuous integration over multiple platforms without any compatibility concerns.It will enable a smooth cycle between development, test, production, and customer environments.
 
 
 # Evaluation Metrics
