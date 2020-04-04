@@ -74,7 +74,7 @@ validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, 
 
 model = BertForSequenceClassification.from_pretrained(
     bert_config['ncbi_base_path'], 
-    num_labels = 8,
+    num_labels = 9,
     output_attentions = False,
     output_hidden_states = False,
 )
