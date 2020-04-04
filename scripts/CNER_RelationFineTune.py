@@ -7,7 +7,7 @@ import pandas as pd
 from progressbar import ProgressBar
 import random
 from CNER_Config import bert_config, data_config
-
+import pickle
 '''
 
 This file is to train and test the relationships.
@@ -24,37 +24,23 @@ count = 0
 pbar = ProgressBar()
 all_files = []
 
-for file in pbar(os.listdir(data_config['test_data_path'])):
+relation_encoding_list = []
+relation_label_list = []
+
+for file in pbar(os.listdir(data_config['train_data_path'])):
     try:
         if file.endswith(".xml"):
-            file_name = os.path.join(data_config['test_data_path'], file)
+            file_name = os.path.join(data_config['train_data_path'], file)
             tree = ET.parse(file_name)
             root = tree.getroot()
             discharge_note = DischargeNote(root,file)
             discharge_note.process_note()
-            relation_list.extend(discharge_note.relation_list)
+            relation_encoding_list.extend(discharge_note.relation_encoding_list)
+            relation_label_list.extend(discharge_note.relation_label_list)
             all_files.append(file)
     except:
         print("Error in processing file:",file)
 
 
-relation_list_df = pd.DataFrame(relation_list)
-
-'''
-random.shuffle(all_files)
-
-test_file_size = int(len(all_files)/5)
-result_list = []
-
-test_files = all_files[0:test_file_size]
-train_files = list(set(all_files) - set(test_files))
-train_data_df = relation_list_df[relation_list_df['file_name'].isin(train_files)]
-test_data_df = relation_list_df[relation_list_df['file_name'].isin(test_files)]
-print("Length of training data:", len(train_data_df))
-
-relation_extraction = RelationExtraction(bert_config['relation_model_path'])
-        
-relation_extraction.fit(train_data_df)
-        
-relation_extraction.test_data(test_data_df)
-'''
+pickle.dump(relation_encoding_list,open("C:/Users/itsma/Documents/Capstone project/relation_encodings_train.pkl","wb"))
+pickle.dump(relation_label_list,open("C:/Users/itsma/Documents/Capstone project/relation_labels_train.pkl","wb"))

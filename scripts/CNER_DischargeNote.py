@@ -1,7 +1,7 @@
 from CNER_BertUtility import *
 import numpy as np
 
-
+relation_types = {'after':1,'before':2,'before_overlap':3,'begun_by':4,'during':5,'ended_by':6,'overlap':7,'simultaneous':8}
 '''
 This class is for initializing and processing the discharge notes. A discharge note is initialized using the XML
 associated with it. The two main tags of concern are 'TEXT' and 'TAGS'. The 'TEXT' tag contains the actual text linked
@@ -49,10 +49,9 @@ def is_available_in_pos_list(dict_list, begin_pos, end_pos):
     return [is_available,id_list]
 
 class DischargeNote():
-    def __init__(self, root,file_name,baseline=True):
+    def __init__(self, root,file_name):
         self.xml_root = root
         self.file_name = file_name
-        self.baseline = baseline
 
     #Added for phase-2 of the project
     def get_entity_from_id(self,id): 
@@ -82,10 +81,7 @@ class DischargeNote():
         
         self.text = text
 
-        if(self.baseline):
-            self.processed_text, self.sentences = process_string(text,1)
-        else:
-            self.processed_text, self.sentences = process_string_finetune(text,1,output_layer_only=True)
+        self.processed_text, self.sentences = process_string_finetune(text,1)
             
         tag_section = root.find('TAGS')
         event_list = []
@@ -145,25 +141,26 @@ class DischargeNote():
         for event in self.event_list:
             ids_list.append(event['id'])
 
-            vec_list = []
+            #vec_list = []
             sentence_index = -1
+
             for entry in self.processed_text:
                 if(event['id'] in entry['entity_ids']):
-                    vec_list.append(entry["keyword_vector"])
+                    #vec_list.append(entry["keyword_vector"])
                     sentence_index = entry["sentence_index"]
             event.update({"sentence_index":sentence_index})
-            event.update({"keyword_vector":np.mean(vec_list,axis=0)})
+            #event.update({"keyword_vector":np.mean(vec_list,axis=0)})
         
         for timex in timex_list:
             ids_list.append(event['id'])
-            vec_list = []
+            #vec_list = []
             sentence_index = -1
             for entry in self.processed_text:
                 if(timex['id'] in entry['entity_ids']):
-                    vec_list.append(entry["keyword_vector"])
+                    #vec_list.append(entry["keyword_vector"])
                     sentence_index = entry["sentence_index"]
             timex.update({"sentence_index":sentence_index})
-            timex.update({"keyword_vector":np.mean(vec_list,axis=0)})
+            #timex.update({"keyword_vector":np.mean(vec_list,axis=0)})
 
         relation_list = []
         
@@ -171,6 +168,8 @@ class DischargeNote():
             new_dict = {}
             from_entity = self.get_entity_from_id(tlink['fromID'])
             to_entity = self.get_entity_from_id(tlink['toID'])
+
+            '''
             try:
                 if(len(from_entity["keyword_vector"])!=768 or len(to_entity["keyword_vector"])!=768):
                     print(self.file_name)
@@ -181,14 +180,36 @@ class DischargeNote():
                 print(self.file_name)
                 print(tlink['fromID'])
                 print(tlink['toID'])
-
-            new_dict['relation_vector'] = np.concatenate((from_entity["keyword_vector"], to_entity["keyword_vector"]), axis=0)
+            '''
+            #new_dict['relation_vector'] = np.concatenate((from_entity["keyword_vector"], to_entity["keyword_vector"]), axis=0)
+            new_dict['from_text'] = from_entity['text']
+            new_dict['to_text'] = to_entity['text']
             new_dict['from_sentence_index'] = from_entity["sentence_index"]
             new_dict['to_sentence_index'] = to_entity["sentence_index"]
-            new_dict['relation_type'] = tlink['type']
+            new_dict['relation_type'] = tlink['type'].lower()
+
+            if(new_dict['relation_type']==''):
+                continue
+            
             new_dict['relation_id'] = ('SECTIME' if tlink['id'].lower().startswith('sectime') else 'TL')
             new_dict['file_name'] = self.file_name
             relation_list.append(new_dict)
         
         self.relation_list = relation_list 
         
+        self.relation_encoding_list = []
+        self.relation_label_list = []
+        self.relation_token_list = []
+        self.relation_data_list = []
+
+        for relation in self.relation_list: 
+            encodings, tokens = get_encoding_for_relation(self.sentences,relation['from_sentence_index'],relation['to_sentence_index'],relation['from_text'],relation['to_text'])
+            relation.update({"relation_predict":np.argmax(get_relation_vector(encodings)[0][0].detach().numpy())})
+            relation.update({"tokens":tokens})
+            self.relation_encoding_list.append(encodings)
+            self.relation_token_list.append(tokens)
+            self.relation_label_list.append(relation_types[relation['relation_type']])
+
+
+        
+

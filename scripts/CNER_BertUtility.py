@@ -9,8 +9,11 @@ import pickle
 from keras.preprocessing.sequence import pad_sequences
 from CNER_Config import bert_config, data_config
 
-bert_model = pickle.load(open(bert_config['bert_model_path'],"rb"))
-bert_model.cpu()
+entity_model = pickle.load(open(bert_config['entity_finetuned_model_path'],"rb"))
+entity_model.cpu()
+
+relation_model = pickle.load(open(bert_config['relation_finetuned_model_path'],"rb"))
+relation_model.cpu()
 
 '''
 This class contains all the utility methods for the project.
@@ -34,6 +37,43 @@ by one, by matching the corresponding BERT tokens, and then averaging the embedd
 repeated for all the sentences and word embeddings are generated.
 
 '''
+def get_encoding_for_relation(sentence_list, from_sentence_index, to_sentence_index, from_text, to_text):
+    bert_tokenizer = BertTokenizer.from_pretrained(bert_config['ncbi_base_path'])
+    
+    token_inputs = from_text + " ; " + to_text
+
+    from_sentence = sentence_list[from_sentence_index]
+    to_sentence = sentence_list[to_sentence_index]
+
+    if(from_sentence['category_sentence'] == from_sentence['sentence']):
+        from_sentence_input = from_sentence['sentence']
+    else:
+        from_sentence_input = from_sentence['category_sentence'] + from_sentence['sentence']
+    
+    if(to_sentence['category_sentence'] == to_sentence['sentence']):
+        to_sentence_input = to_sentence['sentence']
+    else:
+        to_sentence_input = to_sentence['category_sentence'] + to_sentence['sentence']
+    
+    if(not from_sentence_input.strip().endswith(".")):
+        from_sentence_input = from_sentence_input + "."
+
+    token_encodings = bert_tokenizer.encode(token_inputs,add_special_tokens = True)
+    sentence_encodings = bert_tokenizer.encode(from_sentence_input + to_sentence_input,add_special_tokens = True)
+
+    encodings = token_encodings
+    encodings.extend(sentence_encodings[1:])
+
+    bert_tokens = bert_tokenizer.convert_ids_to_tokens(encodings)
+
+    return encodings, bert_tokens
+
+def get_relation_vector(encodings):
+    input_ids = torch.tensor(encodings).long().unsqueeze(0)
+    outputs = relation_model(input_ids,token_type_ids=None)
+    
+    return outputs
+
 def get_bert_token_positions(input_text,token_list,start_from_pos=0,prior_partial_word=""):
     partial_word = ""
 
@@ -76,7 +116,7 @@ def get_bert_token_positions(input_text,token_list,start_from_pos=0,prior_partia
     
     return [pos_list,partial_word]
 
-def process_string_finetune(string_input, padding_length,output_layer_only = False):
+def process_string_finetune(string_input, padding_length,output_layer_only = True):
     #Modified Admission date and Discharge date entries to be in a single line
     string_input = re.sub(r'Admission Date :\n([0-9/ ]*)\n', 'Admission Date : \g<1>\n', string_input)
     string_input = re.sub(r'Discharge Date :\n([0-9/ ]*)\n', 'Discharge Date : \g<1>\n', string_input)
@@ -85,9 +125,22 @@ def process_string_finetune(string_input, padding_length,output_layer_only = Fal
     init_sentences = tokenizer.tokenize(string_input)
 
     sentences = []
-    
+    sentence_list = []
+
+    category_sentence = ""
+
     for entry in init_sentences:
-        sentences.extend(entry.split("\n"))
+        list_of_sentences = entry.split("\n")
+        for sentence in list_of_sentences:
+            new_dict = {}
+            
+            new_dict['sentence'] = sentence
+            if(re.match("[A-za-z0-9\s]*:[\s]*",sentence)):
+                category_sentence = sentence
+            new_dict['category_sentence'] = category_sentence
+            sentence_list.append(new_dict)
+
+        sentences.extend(list_of_sentences)
     
     bert_tokenizer = BertTokenizer.from_pretrained(bert_config['ncbi_base_path'])
     
@@ -108,9 +161,9 @@ def process_string_finetune(string_input, padding_length,output_layer_only = Fal
 
         input_ids = torch.tensor(encodings).long().unsqueeze(0)
         
-        outputs = bert_model(input_ids,token_type_ids=None)
+        #outputs = entity_model(input_ids,token_type_ids=None)
     
-        bert_vector = outputs[1]
+        #bert_vector = outputs[1]
 
         bert_tokens = bert_tokenizer.convert_ids_to_tokens(encodings) #bert_tokenizer.tokenize(bert_input,add_special_tokens = True)
 
@@ -137,7 +190,7 @@ def process_string_finetune(string_input, padding_length,output_layer_only = Fal
             if(len(bert_token_positions)==0):
                 prior_partial_word = ""
                 continue
-            if(partial_word):
+            if(partial_word != ""):
                 prior_partial_word = partial_word
                 start_pos = bert_token_positions[-1]
             else:
@@ -152,6 +205,7 @@ def process_string_finetune(string_input, padding_length,output_layer_only = Fal
             new_dict["end_pos"] = positions_covered
             new_dict["sentence_index"] = index
             
+            '''
             if(output_layer_only):
                 vec_list = []
                 for entry in bert_token_positions:
@@ -168,7 +222,7 @@ def process_string_finetune(string_input, padding_length,output_layer_only = Fal
                     vec_list_layers.append(np.mean(vec_list,axis=0))
                 
                 new_dict["keyword_vector"] = vec_list_layers
-            
+            '''
             word_list.append(new_dict)
     
-    return word_list, sentences
+    return word_list, sentence_list
