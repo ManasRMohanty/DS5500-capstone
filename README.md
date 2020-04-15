@@ -38,6 +38,11 @@ BERT(Bidirectional Encoder Representations from Transformers) is one of the stat
 
 Researchers in Healthcare have taken inspiration from BERT and pretrained models on clinical text and healthcare NLP tasks. BIO-BERT(trained on WIKIPedia, Pubmed articles and MIMIC notes), NCBI-BERT(trained only on PUBMED article and MIMIC notes), Clinical BERT(BIO-BERT finetuned on clinical notes) are examples of such models which are open-sourced. For the purpose of our research, we found NCBI-BERT and Clinical BERT more relevant and thus, we are planning to use these.  
 
+### KG-BERT based Transfer Learning
+
+Knowledge Graphs provide an effective solution to many applications such as semantic search, recommendation engines and create a AI powered question answering system. Knowledge graph is a multi-relational graph with nodes as entities and edges as the relation between entities. KG-BERT, a paper written by Liand Yao and tow other professional from Northwestern University, deals with a graph completion problem using the concept of triples.
+
+<p align="center"><img src="https://drive.google.com/open?id=106dwvi1CqjwhIQqewMYgSD8HSj9rKK7J" height="300" width="500"></p>
 
 # Data
 
