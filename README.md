@@ -54,7 +54,7 @@ As shown above we train a multi-class classification model using logistic regres
 Data for this problem comes from 2012 Integrating Biology and the Bedside (i2b2) Natural Language Processing Challenge. It contains clinical discharge notes tagged with EVENT(clinical event), TIMEX(Temporal Information), SECTIME(Also Temporal Information), and TLINK(Linking EVENT and TIMEX) tags stored in XML files. For the purpose of this challenge, we treat TIMEX and SECTIME as a single tag representing temporal information. Below is a sample discharge note information presented visually(with out TLINK).
 
 
-<p align="center"><img src="/images/SampleDischargeNote.jpg" height="300" width="500"></p>
+<p align="center"><img src="/images/SampleDischargenote.jpg" height="300" width="500"></p>
 
 
                                                   A sample tagged discharge note
