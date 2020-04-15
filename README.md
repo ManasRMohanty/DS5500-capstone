@@ -42,11 +42,11 @@ Researchers in Healthcare have taken inspiration from BERT and pretrained models
 
 Knowledge Graphs provide an effective solution to many applications such as semantic search, recommendation engines and create a AI powered question answering system. Knowledge graph is a multi-relational graph with nodes as entities and edges as the relation between entities. KG-BERT, a paper written by Liand Yao and tow other professional from Northwestern University, deals with a graph completion problem using the concept of triples.
 
-<p align="center"><img src="https://drive.google.com/open?id=1k0Wy6hZh4v74-x22Hv7UqQ5wUNda0shW" height="300" width="500"></p>
+<p align="center"><img src="/images/kgberta.jpg" height="300" width="500"></p>
 
 The authors of the paper treated entities, relations as triples of textual sequences and turn knowledge graph completion into a sequence classification problem. They then fine-tuned BERT model on these sequences for predicting the plausibility of a triple or a relation. As shown in figure 2, in approach a, they fine-tuned BERT by passing the triplet as a sequence and train the model with binary classification objective. In approach b, they passed the head and tail entities as sequence and treated relation label as output class. Then BERT was trained with multi-class classification objective. The method achieved strong performance in several KG completion tasks. We take inspiration from approach b from above and implement it with a slight variation. At first, instead of training a new BERT model for relation extraction we propose using word embedding representations of the extracted entities from phase 1, and perform simple transfer learning as shown below. 
 
-<p align="center"><img src="https://drive.google.com/file/d/1VYccM0UG3AWwjyDJimiwczLuPH3OVD-t/view?usp=sharing" width="500"></p>
+<p align="center"><img src="/images/kgbertb.jpg" height="300" width="500"></p>
 
 As shown above we train a multi-class classification model using logistic regression by passing <Entity1 Embedding$> <Entity2 Embedding>. We do not need to use the special tokens here, as the individual embeddings are of fixed size(768 in our case). 
 # Data
