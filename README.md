@@ -150,7 +150,7 @@ BEFORE - 27377, OVERLAP - 16165, AFTER - 4739, SIMULTANEOUS - 4725, BEFORE_OVERL
 
 Between two events - 25011, Between event and temporal information entry - 33681, Between two temporal information entries - 393
 
-#Deployment
+### Deployment
 
 To deploy our model after running it as a Flask application, we wanted  our solution to be able to be deployed smoothly over multiple platforms. Because of memory constraints at runtime, using lambda service by AWS did not seem like a good choice. And Docker on the other hand, seemed promising with its ability to create, deploy, and run applications by using containers smoothly and conveniently over multiple platforms. Containers allow a developer to package up an application with all libraries and other dependencies, and deploy it as one package. This ensures the application runs on any other docker capable machine.
 In order to create a docker image, in the docker file, we need a list of requirements (lib \& dependencies) and we need to specify the environment in which the application would run(here : python).
