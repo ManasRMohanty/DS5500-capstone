@@ -48,7 +48,7 @@ The authors of the paper treated entities, relations as triples of textual seque
 
 <p align="center"><img src="https://drive.google.com/file/d/1VYccM0UG3AWwjyDJimiwczLuPH3OVD-t/view?usp=sharing" width="500"></p>
 
-As shown above we train a multi-class classification model using logistic regression by passing $<$Entity1 Embedding$>$ $<$Entity2 Embedding$>$. We do not need to use the special tokens here, as the individual embeddings are of fixed size(768 in our case). 
+As shown above we train a multi-class classification model using logistic regression by passing <Entity1 Embedding$> <Entity2 Embedding>. We do not need to use the special tokens here, as the individual embeddings are of fixed size(768 in our case). 
 # Data
 
 Data for this problem comes from 2012 Integrating Biology and the Bedside (i2b2) Natural Language Processing Challenge. It contains clinical discharge notes tagged with EVENT(clinical event), TIMEX(Temporal Information), SECTIME(Also Temporal Information), and TLINK(Linking EVENT and TIMEX) tags stored in XML files. For the purpose of this challenge, we treat TIMEX and SECTIME as a single tag representing temporal information. Below is a sample discharge note information presented visually(with out TLINK).
