@@ -4,7 +4,6 @@ from flask_cors import CORS
 from CNER_ProcessClinicalText import process_text
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
@@ -21,11 +20,9 @@ def all_caps(data):
 def run_my_model():
     text = request.json['myData']
     text.replace("\n","<br>")
-    print("data from client")
-    print(text)
     res = {
         'return': 'success'
     }
     return jsonify(process_text(text))
 
-app.run(debug=True, host='0.0.0.0')
+app.run(host = '0.0.0.0')
