@@ -42,7 +42,7 @@ Researchers in Healthcare have taken inspiration from BERT and pretrained models
 
 Knowledge Graphs provide an effective solution to many applications such as semantic search, recommendation engines and create a AI powered question answering system. Knowledge graph is a multi-relational graph with nodes as entities and edges as the relation between entities. KG-BERT, a paper written by Liand Yao and tow other professional from Northwestern University, deals with a graph completion problem using the concept of triples.
 
-<p align="center"><img src="https://drive.google.com/open?id=106dwvi1CqjwhIQqewMYgSD8HSj9rKK7J" height="300" width="500"></p>
+<p align="center"><img src="https://drive.google.com/open?id=1k0Wy6hZh4v74-x22Hv7UqQ5wUNda0shW" height="300" width="500"></p>
 
 # Data
 
