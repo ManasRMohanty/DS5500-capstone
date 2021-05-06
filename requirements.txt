@@ -13,7 +13,7 @@ cymem==2.0.3
 docutils==0.15.2
 filelock==3.0.12
 Flask==1.1.1
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 ftfy==4.4.3
 gast==0.3.3
 grpcio==1.27.2
